@@ -1,0 +1,42 @@
+from typing import List
+
+def rotX(message: bytes, key: int) -> bytes:
+   
+    result: List[int] = []
+    for byte in message:
+        result.append((byte + key) % 256)
+    return bytes(result)
+
+class RotXAlgorithm:
+   
+    def __init__(self, key: int):
+        self.key = key
+
+    def createEncryptor(self) -> callable:
+      
+        def encryptor(data: bytes) -> bytes:
+            return rotX(data, self.key)
+        return encryptor
+
+    def createDecryptor(self) -> callable:
+       
+        def decryptor(data: bytes) -> bytes:
+            return rotX(data, -self.key)
+        return decryptor
+
+
+message = b'Strive not to be a success, but rather to be of value.'
+key = 4
+algorithm = RotXAlgorithm(key)
+encryptor = algorithm.createEncryptor()
+decryptor = algorithm.createDecryptor()
+
+# Mesazhi i enkriptuar
+encrypted_message = encryptor(message)
+
+# Mesazhi i Deenkriptuar
+decrypted_message = decryptor(encrypted_message)
+
+print(f'Mesazhi baze: {message.decode()}')
+print(f'Mesazhi i enkriptuar: {encrypted_message.hex()}')
+print(f'Mesazhi i deenkriptuar: {decrypted_message.decode()}')
