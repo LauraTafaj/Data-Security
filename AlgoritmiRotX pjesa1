@@ -12,5 +12,21 @@ class RotXAlgorithm:
         def encryptor(message):
             return rotX(message, self.key)
         return encryptor
+        
+ def createDecryptor(self):
+        def decryptor(message):
+            return rotX(message, -self.key)
+        return decryptor
 
+algorithm = RotXAlgorithm(4)
+encryptor = algorithm.createEncryptor()
+decryptor = algorithm.createDecryptor()
+
+message = "Strive not to be a success, but rather to be of value!"
+encrypted_message = encryptor(message)
+decrypted_message = decryptor(encrypted_message.decode('utf-8'))
+
+print("Original message:", message)
+print("Encrypted message:", encrypted_message)
+print("Decrypted message:", decrypted_message)
   
