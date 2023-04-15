@@ -1,0 +1,16 @@
+def rotX(message, key):
+    result = bytearray()
+    for byte in message.encode('utf-8'):
+        result.append((byte + key) % 256)
+    return bytes(result)
+
+class RotXAlgorithm:
+    def __init__(self, key):
+        self.key = key
+
+    def createEncryptor(self):
+        def encryptor(message):
+            return rotX(message, self.key)
+        return encryptor
+
+  
