@@ -1,14 +1,35 @@
-def rotX(message, key):
+def rotX(mesazhi, key):
     result = bytearray()
-    for byte in message.encode('utf-8'):
+    for byte in mesazhi.encode('utf-8'):
         result.append((byte + key) % 256)
     return bytes(result)
+
 
 class RotXAlgorithm:
     def __init__(self, key):
         self.key = key
 
     def createEncryptor(self):
-        def encryptor(message):
-            return rotX(message, self.key)
-        return encryptor
+        def enkriptor(mesazhi):
+            return rotX(mesazhi, self.key)
+
+        return enkriptor
+
+    def createDecryptor(self):
+        def dekriptor(mesazhi):
+            return rotX(mesazhi, -self.key)
+
+        return dekriptor
+
+
+algorithm = RotXAlgorithm(4)
+encryptor = algorithm.createEncryptor()
+decryptor = algorithm.createDecryptor()
+
+message = "Strive not to be a success, but rather to be of value!"
+encrypted_message = encryptor(message)
+decrypted_message = decryptor(encrypted_message.decode('utf-8'))
+
+print("Original message:", message)
+print("Encrypted message:", encrypted_message)
+print("Decrypted message:", decrypted_message)
