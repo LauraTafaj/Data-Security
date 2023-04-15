@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+std::vector<uint8_t> rotX(const std::string& message, int key) {
+    std::vector<uint8_t> result;
+    for (char byte : message) {
+        result.push_back((byte + key) % 256);
+    }
+    return result;
+}
+
+class RotXAlgorithm {
+public:
+    RotXAlgorithm(int key) : key(key) {}
+
+    std::vector<uint8_t> encryptor(const std::string& message) {
+        return rotX(message, key);
+    }
+
+    std::vector<uint8_t> decryptor(const std::vector<uint8_t>& message) {
+        return rotX(std::string(message.begin(), message.end()), -key);
+    }
+
+private:
+    int key;
+};
+
+int main() {
+    RotXAlgorithm algorithm(4);
+    auto encryptor = algorithm.encryptor;
+    auto decryptor = algorithm.decryptor;
+
+    std::string message = "Strive not to be a success, but rather to be of value.";
+
+    auto encrypted_message = encryptor(message);
+    auto decrypted_message = decryptor(encrypted_message);
+
+    std::cout << "Mesazhi baze: " << message << std::endl;
+    std::cout << "Mesazhi i enkriptuar: ";
+    for (auto byte : encrypted_message) {
+        std::cout << static_cast<int>(byte) << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Mesazhi i deenkriptuar: " << decrypted_message << std::endl;
+
+    return 0;
+}
